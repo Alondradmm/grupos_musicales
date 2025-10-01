@@ -23,7 +23,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Tests
-        run: pytest -v
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          pytest --maxfail=1 --disable-warnings -q
 
       - name: Extract Docker image metadata
         id: meta
