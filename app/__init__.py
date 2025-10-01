@@ -10,7 +10,7 @@ def create_app(testing=False):
     # Modificación para leer variables de entorno
     host = os.getenv("MYSQL_HOST", "localhost")
     user = os.getenv("MYSQL_USER", "root")
-    db_port = int(os.getenv("DB_PORT", 3306))
+    db_port = int(os.getenv("DB_PORT", 3306)) # Puerto del contenedor
     password = os.getenv("MYSQL_PASSWORD", "")
     db = os.getenv("MYSQL_DB", "gruposmusicales_test" if testing else "gruposmusicales")
 
