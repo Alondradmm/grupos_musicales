@@ -25,8 +25,17 @@ jobs:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: Run Tests
-        run: pytest -v
+      - name: Run Tests with Coverage
+        run: |
+          coverage run -m pytest -v
+          coverage xml
+          coverage report
+
+      - name: Upload Coverage XML
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml
 
       - name: Extract Docker image metadata
         id: meta
