@@ -1,0 +1,55 @@
+# Servicios a configurar
+services:
+  # Aplicación web
+  web:
+    # Construcción en el directorio actual
+    build: .
+    # Nombre del contenedor
+    container_name: grupos_musicales_app
+    # Enlaza el puerto 2000 local 
+    # con el 2000 del contenedor
+    ports:
+      - "2000:2000"
+    # Variables de entorno
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - DB_PORT=3306
+      - MYSQL_PASSWORD=root_pwd
+      - MYSQL_DB=gruposmusicales
+    # Se debe iniciar primero la BD
+    # para luego ejecutar la app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Base de datos (MySQL)
+  db:
+    # Imagen de MySQL
+    image: mysql:8.0
+    # Nombre de contenedor
+    container_name: mysql_db
+    # El contenedor se reinicia
+    # en caso de fallar
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pwd
+      MYSQL_DATABASE: gruposmusicales
+    # Asegura que el puerto esté disponible antes de iniciar
+    # la aplicación web
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      # Persistencia de datos de la BD
+      - mysql_data:/var/lib/mysql
+      # Ejecuta instrucciones para crear BD
+      # gruposmusicales.sql
+      - ./initdb:/docker-entrypoint-initdb.d/
+    ports:
+      - "3307:3306"
+
+volumes:
+  mysql_data:

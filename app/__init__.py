@@ -1,23 +1,26 @@
 from flask import Flask
 import pymysql
+import os
 
 def create_app(testing=False):
     app = Flask(__name__)
-    app.secret_key = "curso_musica"
+    app.secret_key = os.getenv("SECRET_KEY", "curso_musica")
 
     # Configuración MySQL
-    app.config['TESTING'] = testing
-    app.config['MYSQL_HOST'] = 'localhost'
-    app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = ''
-    app.config['MYSQL_DB'] = 'gruposmusicales_test' if testing else 'gruposmusicales'
+    # Modificación para leer variables de entorno
+    host = os.getenv("MYSQL_HOST", "localhost")
+    user = os.getenv("MYSQL_USER", "root")
+    db_port = int(os.getenv("DB_PORT", 3306))
+    password = os.getenv("MYSQL_PASSWORD", "")
+    db = os.getenv("MYSQL_DB", "gruposmusicales_test" if testing else "gruposmusicales")
 
     # Conexión MySQL
     app.mysql = pymysql.connect(
-        host=app.config['MYSQL_HOST'],
-        user=app.config['MYSQL_USER'],
-        password=app.config['MYSQL_PASSWORD'],
-        db=app.config['MYSQL_DB']
+        host=host,
+        user=user,
+        port=db_port,
+        password=password,
+        db=db
     )
 
     # Importar y registrar blueprints
