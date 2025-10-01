@@ -21,20 +21,11 @@ jobs:
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
-
-      
-
+  
       - name: Run Tests with Coverage
         run: |
           coverage run -m pytest -v
-          coverage xml
           coverage report
-
-      - name: Upload Coverage XML
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage.xml
 
       - name: Extract Docker image metadata
         id: meta
