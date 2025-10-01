@@ -23,7 +23,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Tests
-        run: pytest --maxfail=1 --disable-warnings -q
+        run: pytest -v
 
       - name: Extract Docker image metadata
         id: meta
