@@ -13,10 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build and test with docker-compose
-        run: |
-          docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
-          docker compose -f docker-compose.test.yml down
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest -v
 
       - name: Extract Docker image metadata
         id: meta

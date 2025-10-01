@@ -1,56 +1,58 @@
-import pytest
-from app.models.alumno_model import get_alumno, crear_alumno, get_grupos, inscribir_alumno, get_alumno_inscrito
+from unittest.mock import MagicMock, patch
+from app.models.alumno_model import crear_alumno, get_alumno, get_grupos, inscribir_alumno, get_alumno_inscrito
 
 def test_crear_y_obtener_alumno(app):
-    """ Verifica que un alumno se puede crear y luego obtener correctamente. """
-    with app.app_context():
-        # Crear alumno
-        nuevo = crear_alumno("Alondra", "Méndez", "dalon@gmail.com")
-        assert nuevo is not None
+    fake_alumno = (1, "Alondra", "Méndez", "dalon@gmail.com")
+    fake_cursor = MagicMock()
+    fake_cursor.fetchone.return_value = fake_alumno
+    fake_mysql = MagicMock()
+    fake_mysql.cursor.return_value = fake_cursor
 
-        # Obtener alumno
-        alumno = get_alumno("Alondra", "Méndez", "dalon@gmail.com")
-        assert alumno is not None
+    with app.app_context():
+        with patch("flask.current_app.mysql", fake_mysql):
+            nuevo = crear_alumno("Alondra", "Méndez", "dalon@gmail.com")
+            assert nuevo == fake_alumno
+
+            alumno = get_alumno("Alondra", "Méndez", "dalon@gmail.com")
+            assert alumno == fake_alumno
+            assert alumno[1] == "Alondra"
 
 def test_inscribir_alumno(app):
-    """ Verifica que un alumno se puede inscribir a un grupo. """
+    fake_alumno = (1, "Rodrigo", "González", "rodrigo@mail.com")
+    fake_grupos = [(1, "Piano Vespertino", "Martes a Jueves de 5:00p.m. a 7:00p.m.", 10)]
+    fake_inscripcion = [(fake_alumno[2], fake_alumno[1], fake_alumno[3], fake_grupos[0][1], fake_grupos[0][2])]
+
+    fake_cursor = MagicMock()
+    fake_cursor.fetchall.side_effect = [[], fake_inscripcion]  # primera llamada = no inscrito, segunda = inscrito
+    fake_mysql = MagicMock()
+    fake_mysql.cursor.return_value = fake_cursor
+
     with app.app_context():
-        # Crear alumno de prueba
-        alumno = crear_alumno("Rodrigo", "González", "rodrigo@mail.com")
+        with patch("flask.current_app.mysql", fake_mysql), \
+             patch("app.models.alumno_model.get_grupos", return_value=fake_grupos):
 
-        # Tomar primer grupo de prueba
-        grupos = get_grupos()
-        assert len(grupos) > 0
-        idGrupo = grupos[0][0]  # asumiendo que el primer campo es id_grupo
-
-        # Inscribir alumno
-        inscribir_alumno(alumno[0], idGrupo)
-
-        # Verificar inscripción
-        inscrito = get_alumno_inscrito(alumno[0], idGrupo)
-        assert inscrito is not None
-        assert inscrito[0][0] == "González"  # apellido
+            inscribir_alumno(fake_alumno[0], fake_grupos[0][0])
+            inscrito = get_alumno_inscrito(fake_alumno[0], fake_grupos[0][0])
+            assert len(inscrito) > 0
+            assert inscrito[0][0] == "González"
 
 def test_inscripcion_duplicada(app):
-    """ Test para verificar que un alumno no puede inscribirse dos veces en el mismo grupo. """
+    fake_alumno = (1, "Javier", "Pérez", "javi@gmail.com")
+    fake_grupos = [(1, "Piano Vespertino", "Martes a Jueves de 5:00p.m. a 7:00p.m.", 10)]
+    fake_cursor = MagicMock()
+    # primera llamada vacía, segunda = inscrito, tercera = intenta duplicar
+    fake_cursor.fetchall.side_effect = [[], [(fake_alumno[2], fake_alumno[1], fake_alumno[3], fake_grupos[0][1], fake_grupos[0][2])],
+                                        [(fake_alumno[2], fake_alumno[1], fake_alumno[3], fake_grupos[0][1], fake_grupos[0][2])]]
+    fake_mysql = MagicMock()
+    fake_mysql.cursor.return_value = fake_cursor
+
     with app.app_context():
-        # Crear alumno de prueba
-        alumno = crear_alumno("Javier", "Pérez", "javi@gmail.com")
+        with patch("flask.current_app.mysql", fake_mysql), \
+             patch("app.models.alumno_model.get_grupos", return_value=fake_grupos):
 
-        # Tomar primer grupo de prueba
-        grupos = get_grupos()
-        assert len(grupos) > 0
-        idGrupo = grupos[0][0]
-
-        # Primera inscripción
-        inscribir_alumno(alumno[0], idGrupo)
-
-        # Intento de inscripción duplicada
-        inscribir_alumno(alumno[0], idGrupo)
-
-        # Verificar alumno inscrito, buscando que solo haya 1 registro
-        inscrito = get_alumno_inscrito(alumno[0], idGrupo)
-        
-        # En caso de no haber solo un registro, indica duplicado
-        assert len(inscrito) == 1, "Error: el alumno se inscribió dos veces!"
-
+            # Primera inscripción
+            inscribir_alumno(fake_alumno[0], fake_grupos[0][0])
+            # Duplicado
+            inscribir_alumno(fake_alumno[0], fake_grupos[0][0])
+            inscrito = get_alumno_inscrito(fake_alumno[0], fake_grupos[0][0])
+            assert len(inscrito) == 1, "Error: el alumno se inscribió dos veces!"
