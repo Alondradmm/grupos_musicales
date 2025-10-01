@@ -9,6 +9,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+          image: mysql:8.0
+          env:
+            MYSQL_ROOT_PASSWORD: example
+            MYSQL_DATABASE: gruposmusicales
+          ports:
+            - 3306:3306
+          options: >-
+            --health-cmd="mysqladmin ping -h localhost -pexample"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=3
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,10 +33,23 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
+      - name: Wait for MySQL
+        run: |
+          echo "Esperando que MySQL esté listo..."
+          until mysqladmin ping -h 127.0.0.1 -pexample --silent; do
+            sleep 3
+          done
+
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
       - name: Run Tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: example
+          DB_NAME: gruposmusicales
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest --maxfail=1 --disable-warnings -q
