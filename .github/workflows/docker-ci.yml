@@ -13,11 +13,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip' # caching pip dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest --maxfail=1 --disable-warnings -q
+
       - name: Extract Docker image metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKER_USERNAME }}/my-image
+          images: ${{ vars.DOCKER_USERNAME }}/grupos_musicales_app
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
