@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTCJ Music | Resumen de Inscripciones</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="/getGrupo">Grupos</a></li>
+                <li><a href="/getHorario">Horario</a></li>
+                <li><a href="/getAlumnos">Alumnos</a></li>
+                <li><a href="/salir">Salir</a></li>
+            </ul>
+        </nav> 
+    </header>
+<!-- ==== Para alumnos ==== -->
+
+    {% if regisAlumnos %}
+    {% include 'alumnos.html' %}
+
+<!-- ==== Para grupos ==== -->
+
+    {% elif regisGrupos %}
+    {% include 'Grupo.html' %}
+
+<!-- ==== Para horarios ==== -->
+
+    {% elif regisHorarios %}
+    {% include 'horario.html' %}
+
+
+
+    {% endif %}
+</body>
+</html>

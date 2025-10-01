@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTCJ Music | Grupos</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="inscr">
+        {% if vacio %}
+        <h2>ID Alumno: {{ consulta }}</h2>
+        {% else %}
+        <h2>ID Alumno: {{ consulta.0 }}</h2>
+        {% endif %}
+        <table class="table" border="1">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Horario</th>
+                    <th scope="col">Cupos Disponibles</th>
+                    <th scope="col">Inscripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grupo in grupos %}
+                    <tr>
+                        <td>{{ grupo.1 }}</td>
+                        <td>{{ grupo.2 }}</td>
+                        <td>{{ grupo.4 }}</td>
+                        <td class="btnTD">
+                            {% if vacio %}
+                        <a href="/inscribir/{{ consulta }}/{{ grupo.0 }}" class="tableBtn editBtn">Agregar</a>
+                        {% else %}
+                        <a href="/inscribir/{{ consulta.0 }}/{{ grupo.0 }}" class="tableBtn editBtn">Agregar</a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <h4 class="wrong">
+                    {{ message }}
+                </h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <br>
+</body>
+</html>

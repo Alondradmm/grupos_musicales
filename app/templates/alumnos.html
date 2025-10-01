@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/static/css/style.css">
+
+
+<div class="inscr">
+    <h2>Reporte de alumnos inscritos</h2>
+    <br>
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Horario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alumno in alumnos %}
+                <tr>
+                    <td>{{ alumno.0 }}</td>
+                    <td>{{ alumno.1 }}</td>
+                    <td>{{ alumno.2 }}</td>
+                    <td>{{ alumno.3 }}</td>
+                    <td>{{ alumno.4 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

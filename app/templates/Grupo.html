@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/static/css/style.css">
+<div class="inscr">
+    <h2>Reporte por grupos</h2>
+    <br>
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Horario</th>
+                <th scope="col">Alumnos inscritos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grupo in grupos %}
+                <tr>
+                    <td>{{ grupo.0 }}</td>
+                    <td>{{ grupo.1 }}</td>
+                    <td>{{ grupo.2 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <h4 class="wrong-cancel">
+                    {{ message }}
+                </h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>

@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/static/css/style.css">
+<header class="header">
+    <nav class="nav-bar">
+        <ul>
+            {% set inscripcion_activa = True %}
+            {% if inscripcion_activa %}
+                <li><a href="/">Volver</a></li>
+            {% else %}
+                <li><a href="/abrirInscripcion">Abrir Inscripciones</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+<div class="inscr">
+    <h2>Se ha registrado correctamente</h2>
+    
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Horario</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>{{ alumno.0 }}</td>
+                    <td>{{ alumno.1 }}</td>
+                    <td>{{ alumno.2 }}</td>
+                    <td>{{ alumno.3 }}</td>
+                    <td>{{ alumno.4 }}</td>
+                </tr>
+        </tbody>
+    </table>
+</div>

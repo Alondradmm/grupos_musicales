@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTCJ Music | Registro</title>
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+    
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-bar">
+            <ul>
+                {% set inscripcion_activa = True %}
+                {% if inscripcion_activa %}
+                    <li><a href="/">Volver</a></li>
+                {% else %}
+                    <li><a href="/abrirInscripcion">Abrir Inscripciones</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <div class="inscr">
+            <form method="post" action="/registrarAlumno">
+                <h2>Registro de Alumno</h2><br>
+
+                <p>Nombre</p>
+                <input class="regi" required name="nombre" placeholder="Nombre"><br><br>
+
+                <p>Apellido</p>
+                <input class="regi" required name="apellido" placeholder="Apellidos"><br><br>
+
+                <p>Correo</p>
+                <input class="regi" required name="correo" placeholder="Correo"><br><br>
+
+                <input class="button" type="submit" value="Registrar">
+            </form>
+    </div>
+</body>
+</html>

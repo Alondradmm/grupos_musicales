@@ -1,0 +1,225 @@
+*{/*Quitar todas las animaciones o modificaciones por defecto*/
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: Batang;
+    
+}
+body{
+    font-size: 1.2rem;
+    min-height: 100%;
+    background-image: url("/static/images/FondoMus.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+
+    
+}
+.grid-container > * {
+    padding: 10px;
+}
+/* Utilizar el maquetado en grid*/
+.grid-container{
+    display: grid;
+    gap: 10px;
+
+/* Trabajando las Area (renglones)*/
+grid-template-areas:/* Desde aqui puedes mover las posiciones*/
+    "header"
+    "navbar"
+    "sidebar"
+    "main"
+    "footer";
+}
+
+/*Asignas Areas al HTML , sobre las clases*/
+.header{
+    grid-area: header;   
+    background-color: #111F20;
+    box-shadow: -1px 1px 7px 0px rgba(0,0,.75);
+    position: relative;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-bar ul {
+    display: flex;
+    align-items: center;
+    
+}
+.nav-bar ul li {
+    margin-right: 80px; /* Ajusta el margen derecho según sea necesario */
+    
+}
+.nav-bar ul li a {
+    color: #000000;
+    font-size: 18px;
+    padding: 10px 25px;
+    border-radius: 15px;
+    line-height: 100px;
+    position: relative;
+    left: 20%;
+}
+
+.nav-bar ul li a:hover{
+    color: #000000;
+    background-color: #CFC271;
+}
+.nav-bar ul li a.active{
+    color: #000000;
+    background-color: #CFC271;
+    
+}
+.regi{
+    border-style: solid;
+    border: 1px solid lightgray;
+    border-radius: 9px;
+    height: 29px;
+    text-align: center;
+    width: 80%;
+}
+
+a ,.Volver{
+    padding-top: 10px;
+    text-align: center;
+    width: 70px;
+    height: 40px;
+    background-color: #9B8C35;
+    color: black;
+    text-decoration: none;
+    list-style: none;
+
+}
+.index-container{
+    width: 50%;
+    left: 50%;
+    height: 100%;
+    background-color: #111F20;
+    position: absolute;
+    text-align: center;
+    padding: 5%;
+    color: white;
+    
+}
+h1{
+    font-size: 70px;
+    font-weight: bold;
+}
+.index-container h3{
+    width: 50%;
+    margin: auto;
+    
+}
+.index-groups{
+    background-color: #CFC271;
+    color: #000000;
+    padding: 10px;
+}
+.registerBtn{
+    background-color: #CFC271;
+    color: black;
+    font-size: 30px;
+    padding: 30px;
+    height: auto;
+}
+.registerBtn:hover{
+    background-color: rgb(164, 164, 164);
+}
+.activateBtn{
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    padding: 20px;
+    background-color: #510000;
+    color: white;
+    height: auto;
+}
+.activateBtnT{
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    padding: 20px;
+    background-color: #00510e;
+    color: white;
+    height: auto;
+}
+/* ================== Tablas =================== */
+.inscr{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 1px solid lightgray;
+    width: auto;
+    height: auto;
+    border-radius: 40px;
+    background-color: #111F20;
+    padding: 40px;
+    border-color: #DAB58B;
+    
+}
+p , h2{
+    color: #DAB58B;
+    padding: 10px;
+}
+
+table{
+    text-align: center;
+    color: var(--barras-color);
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid #9b8c3500;
+}
+thead{
+    background: #9B8C35;/*encabezado*/
+    
+}th{
+    color: var(--text-color);
+    padding: 20px 15px;
+    font-weight: 700;
+    text-transform: uppercase;   
+}
+td{
+    padding: 15px;
+}
+tbody tr{
+    cursor: pointer;
+    background-color: #CFC271;
+}
+tbody tr:hover{
+    background: #DDD397;
+}
+.button{
+    text-decoration:none;
+    font-weight: 500;
+    font-size: 15px;
+    color:var(--text-color);
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:15px;
+    padding-right:15px;
+
+    background-color:#CFC271;
+    border-style: solid;
+    border-radius:9px;
+    cursor: pointer;
+
+}
+.wrong{
+    background-color: #510000;
+    color: white;
+    padding: 20px;
+}
+.wrong-cancel{
+    background-color: #510000;
+    color: white;
+    padding: 15px;
+    font-size: 15px;
+}
+.cancelado{
+    position: absolute;
+}

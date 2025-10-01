@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="">
+
+<div class="inscr">
+    <h2>Reporte de horarios</h2>
+    <br>
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th scope="col">Horario</th>
+                <th scope="col">Alumnos inscritos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios %}
+                <tr>
+                    <td>{{ horario.0 }}</td>
+                    <td>{{ horario.1 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

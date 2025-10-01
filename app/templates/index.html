@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTCJ Music | Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="cancelado">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <h4 class="wrong-cancel">
+                    {{ message }}
+                </h4>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    
+    <div class="index-container">
+        <div>
+            <h1>UTCJ MUSIC
+                <br> te invita
+            </h1>
+            <br><br>
+            <h3>Cursos de música clásica por docents profesionales
+            </h3>
+            <br><br>
+            <h3 class="index-groups">
+                Guitarra | Piano | Violin
+            </h3>
+            <br><br>
+            <h4>
+                <strong>Horarios disponibles:</strong> <br>
+                Martes a Jueves de 5:00p.m. a 7:00p.m<br>
+                Sábados de 8:00a.m. a 1:00p.m.<br>
+    
+            </h4>
+            <br><br><br><br><br><br>
+            {% if inscripcion_activa %}
+                    <a href="/registro" class="registerBtn">Registrarme</a>
+                {% else %}
+                
+                    <a href="/reportes" class="registerBtn">Visualizar Reportes</a>
+                {% endif %}
+        </div>
+        
+    </div>
+
+        {% if inscripcion_activa %}
+            <a href="/cerrarInscripcion" class="activateBtn">Cerrar Inscripciones</a>
+        {% else %}
+        
+            <a href="/abrirInscripcion" class="activateBtnT">Abrir Inscripciones</a>
+        {% endif %}
+
+</html>
