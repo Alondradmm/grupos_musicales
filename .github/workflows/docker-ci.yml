@@ -1,47 +1,68 @@
+# Nombre del workflow
 name: Build and Push Docker Image
 
 on:
+  # Se ejecuta al hacer push en la 
+  # rama master o al hacer PR
   push:
     branches:
       - master
   pull_request:
 
+# Cuerpo del workflow
 jobs:
   build:
+  # Se crea una máquina virtual
+  # para ejecutar el workflow
+  # GitHub Actions suele usar Ubuntu
     runs-on: ubuntu-latest
+    # Pasos del flujo de trabajo
     steps:
+      # Extrae el código del repositorio
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Instancia Python para la ejecución
+      # del código de pruebas
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
 
+      # Instala las dependencias
       - name: Install Dependencies
         run: pip install -r requirements.txt
   
+      # Ejecuta las pruebas y genera un reporte
       - name: Run Tests with Coverage
         run: |
           coverage run -m pytest -v
           coverage report
 
+      # Extrae la información del commit
+      # para implementarlo a la imagen de docker
       - name: Extract Docker image metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ vars.DOCKER_USERNAME }}/grupos_musicales_app
 
+      # Inicio de sesión en Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # Instancia el sistema de construcción
+      # de imagenes avanzadas de docker
+      # Aporta compatibilidad
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
+      # Construcción de la imagen (con Dockerfile)
+      # Publicación en Docker Hub
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
